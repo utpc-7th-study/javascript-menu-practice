@@ -19,11 +19,15 @@ class Coach {
     return this.#hateMenus.includes(menu);
   }
 
+  included(menu) {
+    return this.#recommendedMenus.includes(menu);
+  }
+
   chooseMenu(day, category) {
     const menus = new Menu();
     const recommendedMenu = menus.choose(category);
 
-    if (this.isHated(recommendedMenu)) {
+    if (this.isHated(recommendedMenu) || this.included(recommendedMenu)) {
       return;
     }
 
