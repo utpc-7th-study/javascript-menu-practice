@@ -33,7 +33,7 @@ class Controller {
     const hateMenus = await InputView.readHateMenus(coach);
 
     if (hasError(validateMenus, hateMenus)) {
-      return await this.readHateMenus();
+      return await this.readHateMenus(coach);
     }
 
     return hateMenus;
