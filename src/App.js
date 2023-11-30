@@ -1,3 +1,4 @@
+import MenuRecommendation from './domain/MenuRecommendation.js';
 import InputView from './view/InputView.js';
 import OutputView from './view/OutputView.js';
 
@@ -10,6 +11,12 @@ const SAMPLE = {
 };
 
 class App {
+  #menuRecommendation;
+
+  constructor() {
+    this.#menuRecommendation = new MenuRecommendation();
+  }
+
   async play() {
     this.#registerCoachNamesProcess();
   }
@@ -18,7 +25,7 @@ class App {
     while (true) {
       try {
         const coachNames = await InputView.readCoachNames();
-        console.log(coachNames);
+        this.#menuRecommendation.registerCoaches(coachNames);
         break;
       } catch (error) {
         OutputView.print(error.message);
