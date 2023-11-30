@@ -1,3 +1,5 @@
+import { Random } from '@woowacourse/mission-utils';
+
 class Recommand {
   #pamplet;
 
@@ -11,12 +13,23 @@ class Recommand {
       양식: '라자냐, 그라탱, 뇨끼, 끼슈, 프렌치 토스트, 바게트, 스파게티, 피자, 파니니',
     };
   }
+
   choiceCategory() {
-    const categorys = Object.keys(this.#pamplet);
-    console.log(categorys);
+    const categories = Object.keys(this.#pamplet);
+    const selectedCategory = categories[Random.pickNumberInRange(1, 5) - 1];
+    return selectedCategory;
+  }
+
+  choiceMenu() {
+    const category = this.choiceCategory();
+    const menu = Object.entries(this.#pamplet)
+      .filter(([key, value]) => key === category)
+      .flatMap(([key, value]) => value.split(','));
+
+    console.log(Random.shuffle(menu));
   }
 }
 
 const aa = new Recommand();
 
-aa.choiceCategory();
+aa.choiceMenu();
