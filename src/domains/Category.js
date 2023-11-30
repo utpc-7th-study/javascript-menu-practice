@@ -15,13 +15,13 @@ class Category {
   }
 
   choose(numbers) {
-    const categories = [];
+    const recommendedCategories = new Map();
 
     numbers.forEach((number) => {
-      categories.push(this.#categories.get(number));
+      recommendedCategories.push(this.#categories.get(number));
     });
 
-    return categories;
+    return recommendedCategories;
   }
 }
 
