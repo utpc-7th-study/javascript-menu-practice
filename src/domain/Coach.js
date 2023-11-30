@@ -58,7 +58,7 @@ class Coach {
       throw new Error('[ERROR] 못 먹는 메뉴는 최대 2개만 가능합니다.');
     }
 
-    const menues = Object.values(dataBase).flat();
+    const menues = dataBase.map((item) => item.items).flat();
     const isValidMenu = splitedInEdibleMenu.every((menu) => menues.includes(menu));
 
     if (!isValidMenu) {
