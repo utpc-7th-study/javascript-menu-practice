@@ -14,7 +14,10 @@ class Recommand {
 
   choiceCategory() {
     const categories = Object.keys(this.#pamplet);
-    const selectedCategory = categories[Random.pickNumberInRange(1, 5) - 1];
+    const selectedCategory = new Array();
+    for (let i = 0; i < 5; i += 1) {
+      selectedCategory.push(categories[Random.pickNumberInRange(1, 5) - 1]);
+    }
     return selectedCategory;
   }
 
@@ -35,19 +38,17 @@ class Recommand {
     return coachesObj;
   }
 
-  generateWeekMenus() {
+  generateWeekMenus(categories) {
     const oneWeek = 5;
     const totalRecommand = this.#coaches.reduce((acc, name) => {
       return { ...acc, [name]: [] };
     }, {});
 
     for (let i = 0; i < oneWeek; i += 1) {
-      const category = this.choiceCategory();
-      const dayRecommand = this.returnMenu(this.#coaches, category);
-
+      const dayRecommand = this.returnMenu(categories[i]);
       Object.keys(totalRecommand).forEach((coach) => {
         if (dayRecommand.hasOwnProperty(coach)) {
-          const menuArray = dayRecommand[coach].split(' ');
+          const menuArray = dayRecommand[coach].split(',');
           totalRecommand[coach] = totalRecommand[coach].concat(menuArray);
         }
       });

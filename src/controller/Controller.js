@@ -1,6 +1,7 @@
 import Recommand from '../model/Recommand.js';
 import Validator from '../validator/validator.js';
 import InputView from '../view/InputView.js';
+import OutputView from '../view/OutputView.js';
 
 class Controller {
   #validator;
@@ -13,6 +14,9 @@ class Controller {
     const coaches = await InputView.getCoaches();
     const notEatMenu = await this.applyNotEatMenu(coaches);
     const recommand = new Recommand(coaches, notEatMenu);
+    const categories = recommand.choiceCategory();
+    const totalRecommand = recommand.generateWeekMenus(categories);
+    OutputView.printResult(totalRecommand, categories);
   }
 
   async applyCoaches() {
@@ -25,7 +29,7 @@ class Controller {
       return { ...acc, [name]: [] };
     }, {});
     for (const coach of coaches) {
-      const notEatMenu = await InputView.getCantEatMenu();
+      const notEatMenu = await InputView.getCantEatMenu(coach);
       coachesObj[coach] = notEatMenu.map((menu) => menu.trim());
     }
 
