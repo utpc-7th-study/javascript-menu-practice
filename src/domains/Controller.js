@@ -21,6 +21,12 @@ class Controller {
     return coaches;
   }
 
+  readHateMenus(coach) {
+    const hateMenus = InputView.readHateMenus(coach);
+
+    return hateMenus;
+  }
+
   recommendCategory() {
     const category = new Category();
     const numbers = RandomNumberArray.create();

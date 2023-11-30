@@ -7,6 +7,9 @@ class App {
 
   async play() {
     const coaches = await this.controller.readCoachNames();
+    coaches.forEach((coach) => {
+      const hateMenu = this.controller.readHateMenus(coach);
+    });
   }
 }
 

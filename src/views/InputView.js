@@ -6,6 +6,14 @@ const InputView = {
 
     return coachNames.split(',');
   },
+
+  async readHateMenus(coach) {
+    const menus = await Console.readLineAsync(
+      `${coach}(이)가 못 먹는 메뉴를 입력해 주세요.`
+    );
+
+    return menus.split(',');
+  },
 };
 
 export default InputView;
