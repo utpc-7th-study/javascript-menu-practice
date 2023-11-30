@@ -1,12 +1,24 @@
 class Coach {
   #coachName;
+  #inEdibleMenu;
 
   constructor(coachName) {
-    this.#validate(coachName);
+    this.#validateCoachName(coachName);
     this.#coachName = coachName;
+    this.inEdibleMenu = '';
   }
 
-  #validate(coachName) {
+  getCoachName() {
+    return this.#coachName;
+  }
+
+  setInEdibleMenu(inEdibleMenu) {
+    this.#validateInEdibleMenu(inEdibleMenu);
+
+    this.#inEdibleMenu = inEdibleMenu;
+  }
+
+  #validateCoachName(coachName) {
     this.#validateEmpty(coachName);
     this.#validateCoachNameLength(coachName);
     this.#validateCoachNameIncludeSpace(coachName);
@@ -33,6 +45,15 @@ class Coach {
 
     if (!isCoachNameValid) {
       throw new Error('[ERROR] 코치의 이름에 공백이 포함되어 있으면 안됩니다.');
+    }
+  }
+
+  #validateInEdibleMenu(inEdibleMenu) {
+    const splitedInEdibleMenu = inEdibleMenu.split(',');
+    if (splitedInEdibleMenu.length === 0) return;
+
+    if (splitedInEdibleMenu.length > 2) {
+      throw new Error('[ERROR] 못 먹는 메뉴는 최대 2개만 가능합니다.');
     }
   }
 }

@@ -45,6 +45,7 @@ class App {
     while (true) {
       try {
         const inEdibleMenu = await InputView.readInEdibleMenu(coachName);
+        this.#menuRecommendation.setInEdibleMenu(inEdibleMenu, coachName);
         break;
       } catch (error) {
         OutputView.print(error.message);

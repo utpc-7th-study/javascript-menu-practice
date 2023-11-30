@@ -15,6 +15,16 @@ class MenuRecommendation {
     });
   }
 
+  setInEdibleMenu(inEdibleMenu, coachName) {
+    this.#coaches.get(coachName).setInEdibleMenu(inEdibleMenu);
+  }
+
+  getCoaches() {
+    const totalCoaches = [...this.#coaches.values()];
+
+    return totalCoaches.map((coach) => coach.getCoachName());
+  }
+
   #validateCoachNames(coachNames) {
     const splitedCoachNames = coachNames.split(',');
 
