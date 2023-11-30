@@ -49,6 +49,7 @@ class Recommand {
       while (true) {
         try {
           const recommandMenu = this.recommandMenu(category);
+          // 여기서 test시에 무한루프에 빠져버림 이유가 뭘까..?
           validator.IsDuplicateMenu(Recommanded, recommandMenu);
           validator.IsValidMenu(recommandMenu, notEatMenus);
           return { ...acc, [name]: this.recommandMenu(category) };
