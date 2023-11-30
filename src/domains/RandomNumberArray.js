@@ -7,7 +7,7 @@ const RandomNumberArray = {
 
   create() {
     let arr = [];
-    while (arr.length <= 5) {
+    while (arr.length < 5) {
       const randomNumber = RandomNumber.create();
       const sameNumberCount = this.countSameNumber(arr, randomNumber);
 
