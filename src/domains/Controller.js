@@ -40,8 +40,10 @@ class Controller {
     );
   }
 
-  setCoaches(name) {
-    this.#coaches.push(new Coach(name));
+  setCoaches(names) {
+    names.forEach((name) => {
+      this.#coaches.push(new Coach(name));
+    });
   }
 
   recommend() {
