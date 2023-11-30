@@ -1,12 +1,15 @@
 import Category from './Category.js';
+import Coach from './Coach.js';
 import RandomNumberArray from './RandomNumberArray.js';
 
 import { WEEKDAY } from '../constants/weekday.js';
 
 class Controller {
+  #coaches;
   #categories;
 
   constructor() {
+    this.#coaches = [];
     this.#categories = new Map();
   }
 
@@ -21,6 +24,10 @@ class Controller {
     categories.forEach((category, index) =>
       this.#categories.set(WEEKDAY[index], category)
     );
+  }
+
+  setCoaches(name) {
+    this.#coaches.push(new Coach(name));
   }
 }
 
