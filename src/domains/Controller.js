@@ -29,6 +29,19 @@ class Controller {
   setCoaches(name) {
     this.#coaches.push(new Coach(name));
   }
+
+  recommend() {
+    WEEKDAY.forEach((day) => {
+      const category = this.#categories.get(day);
+      this.#recommendToCoaches(day, category);
+    });
+  }
+
+  #recommendToCoaches(day, category) {
+    this.#coaches.forEach((coach) => {
+      coach.chooseMenu(day, category);
+    });
+  }
 }
 
 export default Controller;
