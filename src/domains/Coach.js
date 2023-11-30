@@ -28,7 +28,7 @@ class Coach {
     const recommendedMenu = menus.choose(category);
 
     if (this.isHated(recommendedMenu) || this.included(recommendedMenu)) {
-      return;
+      return this.chooseMenu(day, category);
     }
 
     this.#recommendedMenus.set(day, recommendedMenu);
