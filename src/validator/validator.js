@@ -5,6 +5,4 @@ class Validator {
   }
 }
 
-const aa = new Validator();
-
-aa.IsValidMenu(['aa', 'nbb', 'cc'], ['aa', 'ss']);
+export default Validator;
