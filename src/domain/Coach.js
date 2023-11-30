@@ -1,3 +1,5 @@
+import dataBase from '../dataBase.js';
+
 class Coach {
   #coachName;
   #inEdibleMenu;
@@ -54,6 +56,13 @@ class Coach {
 
     if (splitedInEdibleMenu.length > 2) {
       throw new Error('[ERROR] 못 먹는 메뉴는 최대 2개만 가능합니다.');
+    }
+
+    const menues = Object.values(dataBase).flat();
+    const isValidMenu = splitedInEdibleMenu.every((menu) => menues.includes(menu));
+
+    if (!isValidMenu) {
+      throw new Error('[ERROR] 메뉴판에 없는 메뉴입니다.');
     }
   }
 }
