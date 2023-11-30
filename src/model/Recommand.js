@@ -1,5 +1,6 @@
 import { Random } from '@woowacourse/mission-utils';
 import { SERVICE } from '../constants/Constants.js';
+import Validator from '../validator/validator.js';
 
 class Recommand {
   #pamplet;
@@ -31,8 +32,16 @@ class Recommand {
   }
 
   returnMenu(category) {
+    const validator = new Validator();
     const coachesObj = this.#coaches.reduce((acc, name) => {
-      return { ...acc, [name]: this.recommandMenu(category) };
+      const notEatMenus = this.#notEatMenu[name];
+      while (true) {
+        try {
+          const recommandMenu = this.recommandMenu(category);
+          validator.IsValidMenu(recommandMenu, notEatMenus);
+          return { ...acc, [name]: this.recommandMenu(category) };
+        } catch (e) {}
+      }
     }, {});
 
     return coachesObj;
@@ -47,10 +56,9 @@ class Recommand {
     for (let i = 0; i < oneWeek; i += 1) {
       const dayRecommand = this.returnMenu(categories[i]);
       Object.keys(totalRecommand).forEach((coach) => {
-        if (dayRecommand.hasOwnProperty(coach)) {
-          const menuArray = dayRecommand[coach].split(',');
-          totalRecommand[coach] = totalRecommand[coach].concat(menuArray);
-        }
+        console.log(dayRecommand[coach]);
+        const menuArray = dayRecommand[coach];
+        totalRecommand[coach] = totalRecommand[coach].concat(menuArray);
       });
     }
 

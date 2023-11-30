@@ -1,5 +1,4 @@
 import Recommand from '../model/Recommand.js';
-import Validator from '../validator/validator.js';
 import InputView from '../view/InputView.js';
 import OutputView from '../view/OutputView.js';
 
@@ -17,6 +16,8 @@ class Controller {
     const categories = recommand.choiceCategory();
     const totalRecommand = recommand.generateWeekMenus(categories);
     OutputView.printResult(totalRecommand, categories);
+
+    console.log(notEatMenu, categories, totalRecommand);
   }
 
   async applyCoaches() {
@@ -51,6 +52,4 @@ class Controller {
   }
 }
 
-const aa = new Controller(new Validator());
-
-aa.startRecommand();
+export default Controller;
