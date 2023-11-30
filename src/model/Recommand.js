@@ -37,9 +37,28 @@ class Recommand {
     return coachesObj;
   }
 
-  generateWeekMenus() {}
+  generateWeekMenus(coaches = []) {
+    const oneWeek = 5;
+    const totalRecommand = coaches.reduce((acc, name) => {
+      return { ...acc, [name]: [] };
+    }, {});
+
+    for (let i = 0; i < oneWeek; i += 1) {
+      const category = this.choiceCategory();
+      const dayRecommand = this.returnMenu(coaches, category);
+
+      Object.keys(totalRecommand).forEach((coach) => {
+        if (dayRecommand.hasOwnProperty(coach)) {
+          const menuArray = dayRecommand[coach].split(' ');
+          totalRecommand[coach] = totalRecommand[coach].concat(menuArray);
+        }
+      });
+    }
+
+    return totalRecommand;
+  }
 }
 
 const aa = new Recommand();
 
-console.log(aa.returnMenu(['pobi', 'json', 'ace'], aa.choiceCategory()));
+console.log(aa.generateWeekMenus(['pobi', 'json', 'ace']));
