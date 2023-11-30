@@ -15,8 +15,7 @@ class Category {
   }
 
   choose(numbers) {
-    const recommendedCategories = new Map();
-
+    let recommendedCategories = [];
     numbers.forEach((number) => {
       recommendedCategories.push(this.#categories.get(number));
     });
