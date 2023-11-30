@@ -41,13 +41,15 @@ class Recommand {
     return menu[randomNum];
   }
 
-  returnMenu(category) {
+  returnMenu(category, totalRecommand) {
     const validator = new Validator();
     const coachesObj = this.#coaches.reduce((acc, name) => {
       const notEatMenus = this.#notEatMenu[name];
+      const Recommanded = totalRecommand[name];
       while (true) {
         try {
           const recommandMenu = this.recommandMenu(category);
+          validator.IsDuplicateMenu(Recommanded, recommandMenu);
           validator.IsValidMenu(recommandMenu, notEatMenus);
           return { ...acc, [name]: this.recommandMenu(category) };
         } catch (e) {}
@@ -64,9 +66,8 @@ class Recommand {
     }, {});
 
     for (let i = 0; i < oneWeek; i += 1) {
-      const dayRecommand = this.returnMenu(categories[i]);
+      const dayRecommand = this.returnMenu(categories[i], totalRecommand);
       Object.keys(totalRecommand).forEach((coach) => {
-        console.log(dayRecommand[coach]);
         const menuArray = dayRecommand[coach];
         totalRecommand[coach] = totalRecommand[coach].concat(menuArray);
       });

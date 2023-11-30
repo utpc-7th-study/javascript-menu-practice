@@ -2,7 +2,7 @@ import { Console } from '@woowacourse/mission-utils';
 
 const OutputView = {
   printPrompt(prompt) {
-    Console.print('prompt');
+    Console.print(prompt + '\n');
   },
   printResult(recommandObj, categories) {
     Console.print('메뉴 추천 결과입니다.');

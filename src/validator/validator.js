@@ -2,6 +2,7 @@ class Validator {
   IsValidMenu(menu = '', cantTry = []) {
     const noValidMenu = cantTry.includes(menu);
     if (noValidMenu) throw new Error('[ERROR]');
+    return;
   }
 
   IsValidCoaches(coaches) {
@@ -13,6 +14,11 @@ class Validator {
 
   IsValidNotEatMenu(menus) {
     if (menus.length < 0 || menus.length > 2) throw new Error('[ERROR]');
+  }
+
+  IsDuplicateMenu(Recommanded, recommandMenu) {
+    console.log(Recommanded.includes(recommandMenu));
+    if (Recommanded.includes(recommandMenu)) throw new Error('[ERROR]');
   }
 }
 

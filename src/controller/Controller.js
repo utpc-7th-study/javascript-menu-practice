@@ -10,14 +10,13 @@ class Controller {
   }
 
   async startRecommand() {
+    OutputView.printPrompt('점심 메뉴 추천을 시작합니다.');
     const coaches = await this.applyCoaches();
     const notEatMenu = await this.applyNotEatMenu(coaches);
     const recommand = new Recommand(coaches, notEatMenu);
     const categories = recommand.choiceCategory();
     const totalRecommand = recommand.generateWeekMenus(categories);
     OutputView.printResult(totalRecommand, categories);
-
-    console.log(notEatMenu, categories, totalRecommand);
   }
 
   async applyCoaches() {
