@@ -11,18 +11,18 @@ class Controller {
   #categories;
 
   constructor() {
-    this.#coaches = [];
+    this.#coaches = new Map();
     this.#categories = new Map();
   }
 
-  readCoachNames() {
-    const coaches = InputView.readCoaches();
+  async readCoachNames() {
+    const coaches = await InputView.readCoaches();
 
     return coaches;
   }
 
-  readHateMenus(coach) {
-    const hateMenus = InputView.readHateMenus(coach);
+  async readHateMenus(coach) {
+    const hateMenus = await InputView.readHateMenus(coach);
 
     return hateMenus;
   }
@@ -42,8 +42,13 @@ class Controller {
 
   setCoaches(names) {
     names.forEach((name) => {
-      this.#coaches.push(new Coach(name));
+      this.#coaches.set(name, new Coach(name));
     });
+  }
+
+  setHateMenus(name, menus) {
+    const coach = this.#coaches.get(name);
+    coach.hate(menus);
   }
 
   recommend() {
