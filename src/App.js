@@ -18,7 +18,9 @@ class App {
   }
 
   async play() {
-    this.#registerCoachNamesProcess();
+    await this.#registerCoachNamesProcess();
+    const coaches = this.#menuRecommendation.getCoaches();
+    await this.#inEdibleMenuProcess(coaches);
   }
 
   async #registerCoachNamesProcess() {
@@ -26,6 +28,23 @@ class App {
       try {
         const coachNames = await InputView.readCoachNames();
         this.#menuRecommendation.registerCoaches(coachNames);
+        break;
+      } catch (error) {
+        OutputView.print(error.message);
+      }
+    }
+  }
+
+  async #inEdibleMenuProcess(coaches) {
+    for (let i = 0; i < coaches.length; i++) {
+      await this.#readInEdibleMenuProcess(coaches[i]);
+    }
+  }
+
+  async #readInEdibleMenuProcess(coachName) {
+    while (true) {
+      try {
+        const inEdibleMenu = await InputView.readInEdibleMenu(coachName);
         break;
       } catch (error) {
         OutputView.print(error.message);
