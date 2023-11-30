@@ -6,12 +6,12 @@ import OutputView from '../view/OutputView.js';
 class Controller {
   #validator;
 
-  constructor() {
-    this.#validator = new Validator();
+  constructor(validator) {
+    this.#validator = validator;
   }
 
   async startRecommand() {
-    const coaches = await InputView.getCoaches();
+    const coaches = await this.applyCoaches();
     const notEatMenu = await this.applyNotEatMenu(coaches);
     const recommand = new Recommand(coaches, notEatMenu);
     const categories = recommand.choiceCategory();
@@ -20,23 +20,37 @@ class Controller {
   }
 
   async applyCoaches() {
-    const coaches = await InputView.getCoaches();
-    return coaches;
+    while (true) {
+      try {
+        const coaches = await InputView.getCoaches();
+        this.#validator.IsValidCoaches(coaches);
+        return coaches;
+      } catch ({ message }) {
+        console.log(message);
+      }
+    }
   }
 
   async applyNotEatMenu(coaches) {
-    const coachesObj = coaches.reduce((acc, name) => {
-      return { ...acc, [name]: [] };
-    }, {});
-    for (const coach of coaches) {
-      const notEatMenu = await InputView.getCantEatMenu(coach);
-      coachesObj[coach] = notEatMenu.map((menu) => menu.trim());
-    }
+    while (true) {
+      try {
+        const coachesObj = coaches.reduce((acc, name) => {
+          return { ...acc, [name]: [] };
+        }, {});
+        for (const coach of coaches) {
+          const notEatMenu = await InputView.getCantEatMenu(coach);
+          this.#validator.IsValidNotEatMenu(notEatMenu);
+          coachesObj[coach] = notEatMenu.map((menu) => menu.trim());
+        }
 
-    return coachesObj;
+        return coachesObj;
+      } catch ({ message }) {
+        console.log(message);
+      }
+    }
   }
 }
 
-const aa = new Controller();
+const aa = new Controller(new Validator());
 
 aa.startRecommand();
