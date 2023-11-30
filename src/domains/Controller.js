@@ -2,6 +2,8 @@ import Category from './Category.js';
 import Coach from './Coach.js';
 import RandomNumberArray from './RandomNumberArray.js';
 
+import InputView from '../views/InputView.js';
+
 import { WEEKDAY } from '../constants/weekday.js';
 
 class Controller {
@@ -11,6 +13,12 @@ class Controller {
   constructor() {
     this.#coaches = [];
     this.#categories = new Map();
+  }
+
+  readCoachNames() {
+    const coaches = InputView.readCoaches();
+
+    return coaches;
   }
 
   recommendCategory() {
