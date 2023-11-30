@@ -8,6 +8,11 @@ class App {
   async play() {
     const coaches = await this.#readCoachNames();
     await this.#readHateMenus(coaches);
+
+    this.controller.recommendCategory();
+    this.controller.recommendMenus();
+
+    this.controller.showResult();
   }
 
   async #readCoachNames() {
