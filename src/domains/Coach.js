@@ -33,6 +33,14 @@ class Coach {
 
     this.#recommendedMenus.set(day, recommendedMenu);
   }
+
+  getName() {
+    return this.#name;
+  }
+
+  getRecommendedMenus() {
+    return this.#recommendedMenus;
+  }
 }
 
 export default Coach;
