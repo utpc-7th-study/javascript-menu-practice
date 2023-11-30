@@ -2,6 +2,7 @@ import Category from './Category.js';
 import Coach from './Coach.js';
 import RandomNumberArray from './RandomNumberArray.js';
 
+import OutputView from '../views/OutputView.js';
 import InputView from '../views/InputView.js';
 
 import { WEEKDAY } from '../constants/weekday.js';
@@ -13,6 +14,7 @@ class Controller {
   constructor() {
     this.#coaches = new Map();
     this.#categories = new Map();
+    OutputView.printStartMessgae();
   }
 
   async readCoachNames() {
