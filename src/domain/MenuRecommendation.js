@@ -1,10 +1,13 @@
+import dataBase from '../dataBase.js';
+import generateRandomNumbers from '../util/generateRandomNumbers.js';
 import Coach from './Coach.js';
 
 class MenuRecommendation {
   #coaches;
-
+  #categoryHistory;
   constructor() {
     this.#coaches = new Map();
+    this.#categoryHistory = [];
   }
 
   registerCoaches(coachNames) {
@@ -17,6 +20,29 @@ class MenuRecommendation {
 
   setInEdibleMenu(inEdibleMenu, coachName) {
     this.#coaches.get(coachName).setInEdibleMenu(inEdibleMenu);
+  }
+
+  recommend() {
+    const result = [];
+    let randomNumbers = generateRandomNumbers();
+
+    while (true) {
+      if (this.#categoryHistory.filter((numbers) => numbers === randomNumbers).length < 2) {
+        break;
+      }
+      randomNumbers = generateRandomNumbers();
+    }
+    this.#categoryHistory.push(randomNumbers);
+
+    const category = dataBase
+      .filter((item) => item.id === randomNumbers)
+      .map((item) => item.category)[0];
+
+    this.#coaches.forEach((coach) => {
+      result.push(coach.recommend(randomNumbers));
+    });
+
+    return { category, result };
   }
 
   getCoaches() {

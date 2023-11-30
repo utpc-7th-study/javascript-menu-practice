@@ -1,4 +1,5 @@
 import MenuRecommendation from './domain/MenuRecommendation.js';
+
 import InputView from './view/InputView.js';
 import OutputView from './view/OutputView.js';
 
@@ -10,9 +11,11 @@ class App {
   }
 
   async play() {
+    OutputView.printStart();
     await this.#registerCoachNamesProcess();
     const coaches = this.#menuRecommendation.getCoaches();
     await this.#inEdibleMenuProcess(coaches);
+    this.#recommendMenu();
   }
 
   async #registerCoachNamesProcess() {
@@ -43,6 +46,15 @@ class App {
         OutputView.print(error.message);
       }
     }
+  }
+
+  #recommendMenu() {
+    const result = [];
+    for (let i = 0; i < 5; i++) {
+      result.push(this.#menuRecommendation.recommend());
+    }
+    OutputView.printResult(result);
+    OutputView.printEndRecommend();
   }
 }
 

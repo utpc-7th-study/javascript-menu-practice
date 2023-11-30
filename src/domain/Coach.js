@@ -1,13 +1,16 @@
 import dataBase from '../dataBase.js';
+import shuffle from '../util/Shuffle.js';
 
 class Coach {
   #coachName;
+  #recommendedMenuHistory;
   #inEdibleMenu;
 
   constructor(coachName) {
     this.#validateCoachName(coachName);
     this.#coachName = coachName;
-    this.inEdibleMenu = '';
+    this.#inEdibleMenu = [];
+    this.#recommendedMenuHistory = [];
   }
 
   getCoachName() {
@@ -16,8 +19,46 @@ class Coach {
 
   setInEdibleMenu(inEdibleMenu) {
     this.#validateInEdibleMenu(inEdibleMenu);
+    const splitedMenu = inEdibleMenu.split(',');
 
-    this.#inEdibleMenu = inEdibleMenu;
+    if (splitedMenu.length === 1) {
+      this.#inEdibleMenu.push(inEdibleMenu);
+    }
+
+    if (splitedMenu.length === 2) {
+      splitedMenu.forEach((item) => {
+        this.#inEdibleMenu.push(item);
+      });
+    }
+  }
+
+  recommend(randomNumbers) {
+    let randomMenu = this.#getRandomMenu(randomNumbers);
+
+    while (this.#recommendedMenuHistory.includes(randomMenu)) {
+      randomMenu = this.#getRandomMenu(randomNumbers);
+    }
+
+    while (this.#inEdibleMenu.includes(randomMenu)) {
+      randomMenu = this.#getRandomMenu(randomNumbers);
+    }
+
+    this.#recommendedMenuHistory.push(randomMenu);
+    this.#inEdibleMenu.push(randomMenu);
+
+    return { coachName: this.#coachName, randomMenu };
+  }
+
+  #getRandomMenu(randomNumbers) {
+    const randomCategory = dataBase
+      .filter((item) => item.id === randomNumbers)
+      .map((item) => item.items)
+      .flat();
+
+    const tmp = Object.keys(randomCategory).map((item) => Number(item));
+    const randomMenuIdx = shuffle(tmp)[0];
+    const randomMenu = randomCategory[randomMenuIdx];
+    return randomMenu;
   }
 
   #validateCoachName(coachName) {

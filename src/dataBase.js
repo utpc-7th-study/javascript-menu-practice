@@ -61,7 +61,7 @@ const dataBase = [
   },
   {
     id: 5,
-    category: '아시안',
+    category: '양식',
     items: [
       '라자냐',
       '그라탱',
