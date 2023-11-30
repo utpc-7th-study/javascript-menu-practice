@@ -29,7 +29,17 @@ class Recommand {
     return menu[randomNum];
   }
 
-  recommandMenu() {}
+  returnMenu(coaches = [], category) {
+    const coachesObj = coaches.reduce((acc, name) => {
+      return { ...acc, [name]: this.recommandMenu(category) };
+    }, {});
+
+    return coachesObj;
+  }
+
+  generateWeekMenus() {}
 }
 
 const aa = new Recommand();
+
+console.log(aa.returnMenu(['pobi', 'json', 'ace'], aa.choiceCategory()));
