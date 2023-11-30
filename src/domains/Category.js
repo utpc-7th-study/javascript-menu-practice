@@ -1,0 +1,28 @@
+import { CATEGORIES } from '../constants/category.js';
+
+class Category {
+  #categories;
+
+  constructor() {
+    this.#categories = new Map();
+    this.#set();
+  }
+
+  #set() {
+    CATEGORIES.forEach((category) => {
+      this.#categories.set(category.number, category.name);
+    });
+  }
+
+  choose(numbers) {
+    const categories = [];
+
+    numbers.forEach((number) => {
+      categories.push(this.#categories.get(number));
+    });
+
+    return categories;
+  }
+}
+
+export default Category;
