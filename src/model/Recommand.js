@@ -20,16 +20,16 @@ class Recommand {
     return selectedCategory;
   }
 
-  choiceMenu() {
-    const category = this.choiceCategory();
+  recommandMenu(category) {
     const menu = Object.entries(this.#pamplet)
       .filter(([key, value]) => key === category)
-      .flatMap(([key, value]) => value.split(','));
+      .flatMap(([key, value]) => value.split(',').map((menu) => menu.trim()));
+    const randomNum = Random.pickNumberInRange(0, menu.length - 1);
 
-    console.log(Random.shuffle(menu));
+    return menu[randomNum];
   }
+
+  recommandMenu() {}
 }
 
 const aa = new Recommand();
-
-aa.choiceMenu();
