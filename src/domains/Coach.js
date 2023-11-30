@@ -20,7 +20,7 @@ class Coach {
   }
 
   #included(menu) {
-    return this.#recommendedMenus.includes(menu);
+    return Array.from(this.#recommendedMenus.values()).includes(menu);
   }
 
   chooseMenu(day, category) {
