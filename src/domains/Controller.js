@@ -5,6 +5,8 @@ import RandomNumberArray from './RandomNumberArray.js';
 import OutputView from '../views/OutputView.js';
 import InputView from '../views/InputView.js';
 
+import hasError from '../utils/hasError.js';
+import { validateCoaches, validateMenus } from '../validator/Validator.js';
 import { WEEKDAY } from '../constants/weekday.js';
 
 class Controller {
@@ -20,11 +22,19 @@ class Controller {
   async readCoachNames() {
     const coaches = await InputView.readCoaches();
 
+    if (hasError(validateCoaches, coaches)) {
+      return await this.readCoachNames();
+    }
+
     return coaches;
   }
 
   async readHateMenus(coach) {
     const hateMenus = await InputView.readHateMenus(coach);
+
+    if (hasError(validateMenus, hateMenus)) {
+      return await this.readHateMenus();
+    }
 
     return hateMenus;
   }
