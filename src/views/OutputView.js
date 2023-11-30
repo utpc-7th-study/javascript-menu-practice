@@ -9,7 +9,7 @@ const OutputView = {
     Console.print('\n메뉴 추천 결과입니다.');
 
     this.printCategories(categories);
-    this.printCoaches();
+    this.printCoaches(coaches);
 
     Console.print('\n추천을 완료했습니다.');
   },
@@ -26,7 +26,21 @@ const OutputView = {
     );
   },
 
-  printCoaches() {},
+  printCoaches(coaches) {
+    coaches.forEach((coach) =>
+      this.printMenus(coach.getName(), coach.getRecommendedMenus())
+    );
+  },
+
+  printMenus(coach, menus) {
+    Console.print(
+      `[ ${coach} | ${menus.get('월요일')} | ${menus.get(
+        '화요일'
+      )} | ${menus.get('수요일')} | ${menus.get('목요일')} | ${menus.get(
+        '금요일'
+      )} ]`
+    );
+  },
 };
 
 export default OutputView;

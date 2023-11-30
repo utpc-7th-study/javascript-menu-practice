@@ -53,7 +53,7 @@ class Controller {
     coach.hate(menus);
   }
 
-  recommend() {
+  recommendMenus() {
     WEEKDAY.forEach((day) => {
       const category = this.#categories.get(day);
       this.#recommendToCoaches(day, category);
@@ -64,6 +64,10 @@ class Controller {
     this.#coaches.forEach((coach) => {
       coach.chooseMenu(day, category);
     });
+  }
+
+  showResult() {
+    OutputView.printRecommendResult(this.#categories, this.#coaches);
   }
 }
 
