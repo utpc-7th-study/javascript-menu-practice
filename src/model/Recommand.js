@@ -16,8 +16,18 @@ class Recommand {
   choiceCategory() {
     const categories = Object.keys(this.#pamplet);
     const selectedCategory = new Array();
-    for (let i = 0; i < 5; i += 1) {
-      selectedCategory.push(categories[Random.pickNumberInRange(1, 5) - 1]);
+    const maxCategoryCount = 3;
+
+    while (selectedCategory.length < 5) {
+      const randomCategory = categories[Random.pickNumberInRange(1, 5) - 1];
+
+      const categoryCount = selectedCategory.filter(
+        (category) => category === randomCategory
+      ).length;
+
+      if (categoryCount < maxCategoryCount) {
+        selectedCategory.push(randomCategory);
+      }
     }
     return selectedCategory;
   }
