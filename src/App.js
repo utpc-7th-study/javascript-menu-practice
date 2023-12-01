@@ -11,4 +11,4 @@ class App {
   play() {}
 }
 
-module.exports = App;
+export default App;
