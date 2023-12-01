@@ -1,14 +1,114 @@
-const SAMPLE = {
-  일식: '규동, 우동, 미소시루, 스시, 가츠동, 오니기리, 하이라이스, 라멘, 오코노미야끼',
-  한식: '김밥, 김치찌개, 쌈밥, 된장찌개, 비빔밥, 칼국수, 불고기, 떡볶이, 제육볶음',
-  중식: '깐풍기, 볶음면, 동파육, 짜장면, 짬뽕, 마파두부, 탕수육, 토마토 달걀볶음, 고추잡채',
-  아시안:
-    '팟타이, 카오 팟, 나시고렝, 파인애플 볶음밥, 쌀국수, 똠얌꿍, 반미, 월남쌈, 분짜',
-  양식: '라자냐, 그라탱, 뇨끼, 끼슈, 프렌치 토스트, 바게트, 스파게티, 피자, 파니니',
-};
+import { Random } from '@woowacourse/mission-utils';
+import { ERROR_MESSAGE, MAX, MIN } from './constant/menu';
+import Coach from './domain/coach';
+import RecommendMachine from './domain/recommendMachine';
+import isKorean from './utils/isKorean';
+import stringToArray from './utils/stringToArray';
+import InputView from './view/InputView';
+import OutputView from './view/OutputView';
 
 class App {
-  play() {}
+  #recommendMachine = new RecommendMachine();
+
+  #recommendData = new Map();
+
+  #categoryNumbers = [];
+
+  async play() {
+    OutputView.recommendStart();
+    await this.#enterCoachNames();
+
+    this.#recommendData.forEach(async (_, coach) => {
+      await this.#enterCannotEatFoods(coach);
+    });
+
+    this.#recommendMenu();
+
+    OutputView.printResult(this.#getKoreanCategory(), this.#recommendData);
+  }
+
+  #getKoreanCategory() {
+    const koreanCategory = this.#categoryNumbers.map((categoryNumber) =>
+      this.#recommendMachine.category(categoryNumber),
+    );
+
+    return koreanCategory;
+  }
+
+  #recommendMenu() {
+    this.#applyCategory();
+
+    this.#recommendData.forEach((menu, coach) => {
+      this.#categoryNumbers.forEach((categoryNumber) => {
+        const recommendMenu = this.#recommendMachine.recommend(categoryNumber);
+
+        if (coach.canEat(recommendMenu) && !menu.includes(recommendMenu)) {
+          menu.push(recommendMenu);
+        }
+      });
+    });
+  }
+
+  #applyCategory() {
+    while (this.#categoryNumbers.length < 5) {
+      const randomNumber = Random.pickNumberInRange(MIN.RANDOM_NUM, MAX.RANDOM_NUM) - 1;
+      if (!this.#categoryNumbers.includes(randomNumber)) {
+        this.#categoryNumbers.push(randomNumber);
+      }
+    }
+  }
+
+  async #enterCoachNames() {
+    while (this.#recommendData.size === 0) {
+      try {
+        const coachNameInput = await InputView.askCoachNames();
+        this.#validateCoachNameInput(coachNameInput);
+        const coaches = stringToArray(coachNameInput);
+        coaches.forEach((name) => {
+          this.#recommendData.set(new Coach(name), []);
+        });
+        break;
+      } catch (error) {
+        OutputView.print(error.message);
+      }
+    }
+  }
+
+  async #enterCannotEatFoods(coach) {
+    while (true) {
+      try {
+        const cannotEatFoodInput = await InputView.askCannotEatFoods(coach.getName());
+        this.#validateCannotEatFoodInput(cannotEatFoodInput);
+        const cannotEatFoods = stringToArray(cannotEatFoodInput);
+        cannotEatFoods.forEach((foodName) => {
+          coach.addCannotEatFood(foodName);
+        });
+        break;
+      } catch (error) {
+        OutputView.print(error.message);
+      }
+    }
+  }
+
+  #validateCoachNameInput(coachNameInput) {
+    const coaches = stringToArray(coachNameInput);
+    if (coaches.length < MIN.COACH || coaches.length > MAX.COACH) {
+      throw new Error(ERROR_MESSAGE.LESS_COACH);
+    }
+  }
+
+  #validateCannotEatFoodInput(cannotEatFoodInput) {
+    const cannotEatFoods = stringToArray(cannotEatFoodInput);
+    if (cannotEatFoods.length > MAX.CANNOT_EAT_MENU) {
+      throw new Error(ERROR_MESSAGE.OVER_CANNOT_EAT_MENU);
+    }
+
+    cannotEatFoods.forEach((food) => {
+      if (!isKorean(food)) {
+        throw new Error(ERROR_MESSAGE.NOT_KOREAN);
+      }
+    });
+  }
 }
 
-module.exports = App;
+export default App;
