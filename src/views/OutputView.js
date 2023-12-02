@@ -22,7 +22,7 @@ const OutputView = {
         '화요일'
       )} | ${categories.get('수요일')} | ${categories.get(
         '목요일'
-      )} | ${categories.get('금요일')} }`
+      )} | ${categories.get('금요일')} ]`
     );
   },
 
