@@ -64,15 +64,15 @@ class Controller {
   }
 
   recommendMenus() {
-    WEEKDAY.forEach((day) => {
-      const category = this.#categories.get(day);
-      this.#recommendToCoaches(day, category);
+    this.#coaches.forEach((coach) => {
+      this.#informCategoryTo(coach);
     });
   }
 
-  #recommendToCoaches(day, category) {
-    this.#coaches.forEach((coach) => {
-      coach.chooseMenu(day, category);
+  #informCategoryTo(coach) {
+    WEEKDAY.forEach((DAY) => {
+      const category = this.#categories.get(DAY);
+      coach.chooseMenu(DAY, category);
     });
   }
 
