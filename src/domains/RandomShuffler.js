@@ -1,0 +1,11 @@
+import { Random } from '@woowacourse/mission-utils';
+
+const RandomShuffler = {
+  shuffle() {
+    const index = Random.shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9])[0];
+
+    return index;
+  },
+};
+
+export default RandomShuffler;
