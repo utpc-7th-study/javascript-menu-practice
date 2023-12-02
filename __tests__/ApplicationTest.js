@@ -37,12 +37,6 @@ const getOutput = (logSpy) => {
   return [...logSpy.mock.calls].join('');
 };
 
-const expectLogContains = (received, logs) => {
-  logs.forEach((log) => {
-    expect(received).toEqual(expect.stringContaining(log));
-  });
-};
-
 describe('점심 메뉴 테스트', () => {
   afterEach(() => {
     jest.clearAllMocks();
@@ -58,11 +52,11 @@ describe('점심 메뉴 테스트', () => {
       const sequenced = (_, idx) => idx + 1;
       mockShuffles([
         // 구구
-        [2, Array.from({ length: 9 }, sequenced)],
-        [7, Array.from({ length: 9 }, sequenced)],
-        [1, Array.from({ length: 9 }, sequenced)],
-        [4, Array.from({ length: 9 }, sequenced)],
-        [2, Array.from({ length: 9 }, sequenced)],
+        [2, Array.from({ length: 9 }, sequenced)], // 한식
+        [7, Array.from({ length: 9 }, sequenced)], // 양식
+        [1, Array.from({ length: 9 }, sequenced)], // 일식
+        [4, Array.from({ length: 9 }, sequenced)], // 중식
+        [2, Array.from({ length: 9 }, sequenced)], // 아시안
 
         //제임스
         [9, Array.from({ length: 9 }, sequenced)],
