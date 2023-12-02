@@ -19,9 +19,9 @@ describe('Category 클래스 테스트', () => {
     const category = new Category();
 
     // when
-    const categories = category.choose(randomNumbers);
+    const result = category.choose(randomNumbers);
 
     // then
-    expect(categories).toStrictEqual(recommendedCategoreis);
+    expect(result).toStrictEqual(recommendedCategoreis);
   });
 });
