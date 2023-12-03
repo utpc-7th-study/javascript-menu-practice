@@ -4,10 +4,9 @@ import Coach from './Coach.js';
 
 class MenuRecommendation {
   #coaches;
-  #categoryHistory;
+
   constructor() {
     this.#coaches = new Map();
-    this.#categoryHistory = [];
   }
 
   registerCoaches(coachNames) {
@@ -23,32 +22,41 @@ class MenuRecommendation {
   }
 
   recommend() {
+    const randomNumbers = this.#getGenerateRandomNumber();
+    const recommendMenus = this.#getRecommendMenus(randomNumbers);
+    const category = this.#getCategory(randomNumbers);
+
+    return { category, recommendMenus };
+  }
+
+  #getCategory(randomNumbers) {
+    return randomNumbers.map((randomNumber) => this.#generateRandomCategory(randomNumber));
+  }
+
+  #getRecommendMenus(randomNumbers) {
     const result = [];
-    let randomNumbers = generateRandomNumbers();
-
-    while (true) {
-      if (this.#categoryHistory.filter((numbers) => numbers === randomNumbers).length < 2) {
-        break;
-      }
-      randomNumbers = generateRandomNumbers();
-    }
-    this.#categoryHistory.push(randomNumbers);
-
-    const category = dataBase
-      .filter((item) => item.id === randomNumbers)
-      .map((item) => item.category)[0];
 
     this.#coaches.forEach((coach) => {
-      result.push(coach.recommend(randomNumbers));
+      result.push(this.#recommendMenuEachCoach(coach, randomNumbers));
     });
 
-    return { category, result };
+    return result;
+  }
+
+  #recommendMenuEachCoach(coach, randomNumbers) {
+    return randomNumbers.map((randomNumber) => coach.recommendMenu(randomNumber));
   }
 
   getCoaches() {
-    const totalCoaches = [...this.#coaches.values()];
+    return [...this.#coaches.keys()];
+  }
 
-    return totalCoaches.map((coach) => coach.getCoachName());
+  #generateRandomCategory(randomNumber) {
+    return dataBase.filter((item) => item.id === randomNumber).map((item) => item.category)[0];
+  }
+
+  #getGenerateRandomNumber() {
+    return generateRandomNumbers();
   }
 
   #validateCoachNames(coachNames) {

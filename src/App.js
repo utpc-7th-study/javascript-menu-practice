@@ -13,9 +13,10 @@ class App {
   async play() {
     OutputView.printStart();
     await this.#registerCoachNamesProcess();
+
     const coaches = this.#menuRecommendation.getCoaches();
     await this.#inEdibleMenuProcess(coaches);
-    this.#recommendMenu();
+    this.#recommendMenu(coaches);
   }
 
   async #registerCoachNamesProcess() {
@@ -48,12 +49,10 @@ class App {
     }
   }
 
-  #recommendMenu() {
-    const result = [];
-    for (let i = 0; i < 5; i++) {
-      result.push(this.#menuRecommendation.recommend());
-    }
-    OutputView.printResult(result);
+  #recommendMenu(coaches) {
+    const result = this.#menuRecommendation.recommend();
+
+    OutputView.printResult(result, coaches);
     OutputView.printEndRecommend();
   }
 }

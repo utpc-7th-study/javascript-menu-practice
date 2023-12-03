@@ -1,5 +1,5 @@
 import dataBase from '../dataBase.js';
-import shuffle from '../util/Shuffle.js';
+import shuffle from '../util/shuffle.js';
 
 class Coach {
   #coachName;
@@ -8,56 +8,46 @@ class Coach {
 
   constructor(coachName) {
     this.#validateCoachName(coachName);
+
     this.#coachName = coachName;
     this.#inEdibleMenu = [];
     this.#recommendedMenuHistory = [];
   }
 
-  getCoachName() {
-    return this.#coachName;
-  }
-
   setInEdibleMenu(inEdibleMenu) {
     this.#validateInEdibleMenu(inEdibleMenu);
-    const splitedMenu = inEdibleMenu.split(',');
 
-    if (splitedMenu.length === 1) {
-      this.#inEdibleMenu.push(inEdibleMenu);
-    }
-
-    if (splitedMenu.length === 2) {
-      splitedMenu.forEach((item) => {
-        this.#inEdibleMenu.push(item);
-      });
-    }
+    inEdibleMenu.split(',').forEach((item) => this.#inEdibleMenu.push(item));
   }
 
-  recommend(randomNumbers) {
+  recommendMenu(randomNumbers) {
     let randomMenu = this.#getRandomMenu(randomNumbers);
 
-    while (this.#recommendedMenuHistory.includes(randomMenu)) {
-      randomMenu = this.#getRandomMenu(randomNumbers);
-    }
-
-    while (this.#inEdibleMenu.includes(randomMenu)) {
+    while (this.#isIncludeGetMenu(randomMenu)) {
       randomMenu = this.#getRandomMenu(randomNumbers);
     }
 
     this.#recommendedMenuHistory.push(randomMenu);
-    this.#inEdibleMenu.push(randomMenu);
 
     return { coachName: this.#coachName, randomMenu };
   }
 
-  #getRandomMenu(randomNumbers) {
+  #isIncludeGetMenu(randomMenu) {
+    if (this.#recommendedMenuHistory.includes(randomMenu)) return true;
+    if (this.#inEdibleMenu.includes(randomMenu)) return true;
+
+    return false;
+  }
+
+  #getRandomMenu(randomNumber) {
     const randomCategory = dataBase
-      .filter((item) => item.id === randomNumbers)
-      .map((item) => item.items)
+      .filter(({ id }) => id === randomNumber)
+      .map(({ items }) => items)
       .flat();
 
-    const tmp = Object.keys(randomCategory).map((item) => Number(item));
-    const randomMenuIdx = shuffle(tmp)[0];
-    const randomMenu = randomCategory[randomMenuIdx];
+    const randomMenuIdx = shuffle()[0];
+    const randomMenu = randomCategory[randomMenuIdx - 1];
+
     return randomMenu;
   }
 
@@ -92,6 +82,8 @@ class Coach {
   }
 
   #validateInEdibleMenu(inEdibleMenu) {
+    if (inEdibleMenu.trim('') === '') return;
+
     const splitedInEdibleMenu = inEdibleMenu.split(',');
     if (splitedInEdibleMenu.length === 0) return;
 

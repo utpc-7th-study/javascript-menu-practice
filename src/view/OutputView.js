@@ -9,49 +9,34 @@ const OutputView = {
     Console.print(message);
   },
 
-  printResult(results) {
-    let template = `[ 구분 | 월요일 | 화요일 | 수요일 | 목요일 | 금요일 ]\n`;
-    template += '[ 카테고리 |';
-
-    results.forEach((item, idx) => {
-      if (idx === 4) {
-        template += ` ${item.category} ]`;
-        return;
-      }
-      template += ` ${item.category} |`;
-    });
-
-    results.forEach(({ category, result }, idx) => {
-      const { coachName, randomMenu } = result[0];
-      if (idx === 0) {
-        template += `\n[ ${coachName} | ${randomMenu}`;
-        return;
-      }
-
-      if (idx === 4) {
-        template += ` | ${randomMenu} ]`;
-        return;
-      }
-
-      template += ` | ${randomMenu}`;
-    });
-
-    results.forEach(({ category, result }, idx) => {
-      const { coachName, randomMenu } = result[1];
-      if (idx === 0) {
-        template += `\n[ ${coachName} | ${randomMenu}`;
-        return;
-      }
-
-      if (idx === 4) {
-        template += ` | ${randomMenu} ]`;
-        return;
-      }
-
-      template += ` | ${randomMenu}`;
-    });
+  printResult(results, coaches) {
+    const { category, recommendMenus } = results;
 
     Console.print('\n메뉴 추천 결과입니다.');
+    Console.print(`[ 구분 | 월요일 | 화요일 | 수요일 | 목요일 | 금요일 ]`);
+
+    this.printRecommendMenus(category, recommendMenus, coaches);
+  },
+
+  forMatCategory(categories) {
+    return categories.reduce((result, category) => `${result} | ${category}`, '[ 카테고리') + ' ]';
+  },
+
+  forMatRecommendMenus(recommendMenus, coaches) {
+    const result = coaches.reduce((template, coach, i) => {
+      const menuList = recommendMenus[i].map(({ randomMenu }) => ` | ${randomMenu}`).join('');
+
+      return `${template}\n[ ${coach}${menuList} ]`;
+    }, '');
+
+    return result;
+  },
+
+  printRecommendMenus(category, recommendMenus, coaches) {
+    let template = '';
+    template += this.forMatCategory(category);
+    template += this.forMatRecommendMenus(recommendMenus, coaches);
+
     Console.print(template);
   },
 
