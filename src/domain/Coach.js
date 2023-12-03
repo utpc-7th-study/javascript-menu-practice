@@ -85,12 +85,17 @@ class Coach {
     if (inEdibleMenu.trim('') === '') return;
 
     const splitedInEdibleMenu = inEdibleMenu.split(',');
-    if (splitedInEdibleMenu.length === 0) return;
+    this.#validateInEdibleMenuMaxLength(splitedInEdibleMenu);
+    this.#validateInEdibleMenuNotFoundMenu(splitedInEdibleMenu);
+  }
 
+  #validateInEdibleMenuMaxLength(splitedInEdibleMenu) {
     if (splitedInEdibleMenu.length > 2) {
       throw new Error('[ERROR] 못 먹는 메뉴는 최대 2개만 가능합니다.');
     }
+  }
 
+  #validateInEdibleMenuNotFoundMenu(splitedInEdibleMenu) {
     const menues = dataBase.map((item) => item.items).flat();
     const isValidMenu = splitedInEdibleMenu.every((menu) => menues.includes(menu));
 
