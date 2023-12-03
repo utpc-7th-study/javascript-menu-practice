@@ -21,12 +21,7 @@ class Coach {
   }
 
   recommendMenu(randomNumbers) {
-    let randomMenu = this.#getRandomMenu(randomNumbers);
-
-    while (this.#isIncludeGetMenu(randomMenu)) {
-      randomMenu = this.#getRandomMenu(randomNumbers);
-    }
-
+    const randomMenu = this.#getRandomMenu(randomNumbers);
     this.#recommendedMenuHistory.push(randomMenu);
 
     return { randomMenu };
@@ -40,15 +35,22 @@ class Coach {
   }
 
   #getRandomMenu(randomNumber) {
-    const randomCategory = dataBase
+    const randomCategory = this.#getRandomCategory(randomNumber);
+    const randomMenuIdx = shuffle()[0];
+    let randomMenu = randomCategory[randomMenuIdx - 1];
+
+    while (this.#isIncludeGetMenu(randomMenu)) {
+      randomMenu = this.#getRandomMenu(randomNumbers);
+    }
+
+    return randomMenu;
+  }
+
+  #getRandomCategory(randomNumber) {
+    return dataBase
       .filter(({ id }) => id === randomNumber)
       .map(({ items }) => items)
       .flat();
-
-    const randomMenuIdx = shuffle()[0];
-    const randomMenu = randomCategory[randomMenuIdx - 1];
-
-    return randomMenu;
   }
 
   #validateCoachName(coachName) {
