@@ -29,7 +29,7 @@ class Coach {
 
     this.#recommendedMenuHistory.push(randomMenu);
 
-    return { coachName: this.#coachName, randomMenu };
+    return { randomMenu };
   }
 
   #isIncludeGetMenu(randomMenu) {
